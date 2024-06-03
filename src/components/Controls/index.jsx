@@ -1,28 +1,49 @@
 /* eslint-disable react/prop-types */
+const filterFromObject = (object, condition) => {
+  return Object.entries(object).reduce((acc, [key, value]) => {
+    if (condition(key, value)) {
+      acc[key] = value;
+    }
+    return acc;
+  }, {});
+};
+
 const Controls = ({
   nodes,
   addNode,
   removeNode,
-  stepTypeMap = {},
-  conditionMap = {},
+  stepTypeMap,
+  conditionsMap,
   selectedNodeId,
   showMoreButtons,
+  uniqueStepTypes,
   setShowMoreButtons,
   scrollBackToContent,
   addConditionalBranches,
 }) => {
+  const node = nodes.find(
+    (node) => uniqueStepTypes.indexOf(node.stepType) > -1
+  );
+  let filteredStepTypeMap = stepTypeMap;
+  if (node) {
+    filteredStepTypeMap = filterFromObject(
+      stepTypeMap,
+      (key) => uniqueStepTypes.indexOf(key) === -1
+    );
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "10px" }}>
       <div>
         <label htmlFor="step_type">Step type:</label>
         <br />
         <select name="step_type" id="step_type">
-          {Object.keys(stepTypeMap).map((option) => (
+          {Object.keys(filteredStepTypeMap).map((option) => (
             <option value={option} key={crypto.randomUUID()}>
-              {stepTypeMap[option]}
+              {filteredStepTypeMap[option]}
             </option>
           ))}
-          {Object.keys(stepTypeMap).length === 0 && (
+          {Object.keys(filteredStepTypeMap).length === 0 && (
             <option value={"-------"} key={crypto.randomUUID()}>
               ------- Select -------
             </option>
@@ -50,12 +71,12 @@ const Controls = ({
             <label htmlFor="condition">Choose condition:</label>
             <br />
             <select name="condition" id="condition">
-              {Object.keys(conditionMap).map((option) => (
+              {Object.keys(conditionsMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
-                  {conditionMap[option]}
+                  {conditionsMap[option]}
                 </option>
               ))}
-              {Object.keys(conditionMap).length === 0 && (
+              {Object.keys(conditionsMap).length === 0 && (
                 <option value={"-------"} key={crypto.randomUUID()}>
                   ------- Select -------
                 </option>
@@ -68,12 +89,12 @@ const Controls = ({
             </label>
             <br />
             <select name="left_step_type" id="left_step_type">
-              {Object.keys(stepTypeMap).map((option) => (
+              {Object.keys(filteredStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
-                  {stepTypeMap[option]}
+                  {filteredStepTypeMap[option]}
                 </option>
               ))}
-              {Object.keys(stepTypeMap).length === 0 && (
+              {Object.keys(filteredStepTypeMap).length === 0 && (
                 <option value={"-------"} key={crypto.randomUUID()}>
                   ------- Select -------
                 </option>
@@ -86,12 +107,12 @@ const Controls = ({
             </label>
             <br />
             <select name="right_step_type" id="right_step_type">
-              {Object.keys(stepTypeMap).map((option) => (
+              {Object.keys(filteredStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
-                  {stepTypeMap[option]}
+                  {filteredStepTypeMap[option]}
                 </option>
               ))}
-              {Object.keys(stepTypeMap).length === 0 && (
+              {Object.keys(filteredStepTypeMap).length === 0 && (
                 <option value={"-------"} key={crypto.randomUUID()}>
                   ------- Select -------
                 </option>

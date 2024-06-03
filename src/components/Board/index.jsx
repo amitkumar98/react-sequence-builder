@@ -3,6 +3,7 @@ const Board = ({
   zoom,
   children,
   contentRef,
+  boardStyles,
   containerRef,
   draggingNode,
   handleMouseUp,
@@ -10,7 +11,6 @@ const Board = ({
   handleMouseDown,
   handleMouseMove,
   dragOffsetBoard,
-  boardStyles = {},
 }) => {
   return (
     <div

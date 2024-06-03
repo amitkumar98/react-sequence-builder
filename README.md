@@ -4,7 +4,7 @@
 
 ## Usage example
 
- - index.jsx
+- index.jsx
 
 ```
 import React from "react";
@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 ```
 
- - SequenceBuilderWrapper.jsx
+- SequenceBuilderWrapper.jsx
 
 ```
 import "./App.css";
@@ -30,8 +30,8 @@ import { SequenceBuilder, useSequenceBuilder } from "react-sequence-builder";
 
 function SequenceBuilderWrapper() {
 
-  // Get nodes 
-  const { nodes } = useSequenceBuilder();
+  // Get nodes
+  const { nodes, handleSetNodes } = useSequenceBuilder();
 
   return (
     <>
@@ -49,70 +49,76 @@ Props:
 
 The SequilderBuilder component has the following props:
 
- - nodeStyles
+- nodeStyles
 
-  ```
-    {
-      width: "400px",
-      height: "100px",
-      display: "flex",
-      justifyContent: "center",
-      fontSize: "26px",
-      backgroundColor: "#white",
-      backgroundColorOnSelect: "d3d3d3",
-      border: "1px solid white",
-      boxSizing: "border-box",
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-      borderRadius: "15px",
-      color: "black"
-    } 
-  ```
-  
- - subNodeStyles
+```
+  {
+    width: "400px",
+    height: "100px",
+    display: "flex",
+    justifyContent: "center",
+    fontSize: "26px",
+    backgroundColor: "#white",
+    backgroundColorOnSelect: "d3d3d3",
+    border: "1px solid white",
+    boxSizing: "border-box",
+    boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+    borderRadius: "15px",
+    color: "black"
+  }
+```
 
-  ```
-    {
-      width: "250px",
-      height: "100px",
-      display: "flex",
-      justifyContent: "center",
-      fontSize: "20px",
-      backgroundColor: "lightblue",
-      backgroundColorOnSelect: "d3d3d3",
-      border: "1px solid white",
-      boxSizing: "border-box",
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-      borderRadius: "15px",
-      color: "black"
-    } 
-  ```
-   
- - wrapperStyles
+- subNodeStyles
 
-  ```
-    {
-      fontFamily: "sans-serif",
-      columnGap: "10px"
-    } 
-  ```
+```
+  {
+    width: "250px",
+    height: "100px",
+    display: "flex",
+    justifyContent: "center",
+    fontSize: "20px",
+    backgroundColor: "lightblue",
+    backgroundColorOnSelect: "d3d3d3",
+    border: "1px solid white",
+    boxSizing: "border-box",
+    boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+    borderRadius: "15px",
+    color: "black"
+  }
+```
 
- - stepTypeMap
+- boardStyles
 
-  ```
-    {
-      stepTypeKey: "Text to display on the node",
-      ...
-    } 
-  ```
+```
+  {
+    fontFamily: "sans-serif",
+    columnGap: "10px"
+  }
+```
 
- - conditionsMap
+- stepTypeMap
 
-  ```
-    {
-      conditionKey: "Text to display in select input",
-      ...
-    } 
-  ```
+```
+  {
+    stepTypeKey: "Text to display on the node",
+    ...
+  }
+```
+
+- conditionsMap
+
+```
+  {
+    conditionKey: "Text to display in select input",
+    ...
+  }
+```
+
+- uniqueStepTypes - Can have only one node of this step type
+
+```
+  ['stepTypeKey']
+```
 
 - iconsMap
 
@@ -120,44 +126,43 @@ The SequilderBuilder component has the following props:
     {
       iconName: "URL",
       ...
-    } 
+    }
 ```
 
- - iconStyles
+- iconStyles
 
 ```
     {
       width: "32px",
       height: "32px"
-    } 
+    }
 ```
 
- - nodeIconMap
+- nodeIconMap
 
 ```
     {
       stepTypeKey: "iconName",
       ...
-    } 
+    }
 ```
 
- - subNodeContent
+- subNodeContent
 
 ```
 () => <>Sub-Node content</>
 ```
 
- - leftBranchSubNodeContent 
+- leftBranchSubNodeContent
 
 ```
 () => <>Left branch sub-node content</>
 ```
 
- - rightBranchSubNodeContent
+- rightBranchSubNodeContent
 
 ```
 () => <>Right branch sub-node content</>
 ```
-
 
 #### All style related props given in above snippets are applied by default.

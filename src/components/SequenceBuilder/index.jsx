@@ -13,14 +13,17 @@ function wait(seconds) {
 }
 
 const SequenceBuilder = ({
-  nodeStyles,
-  subNodeStyles,
-  wrapperStyles,
-  stepTypeMap,
-  conditionsMap,
+  edgeStroke,
   iconsMap = {},
   iconStyles = {},
+  nodeStyles = {},
   nodeIconMap = {},
+  boardStyles = {},
+  stepTypeMap = {},
+  subNodeStyles = {},
+  wrapperStyles = {},
+  conditionsMap = {},
+  uniqueStepTypes = [],
   subNodeContent = () => <>Sub-Node content</>,
   leftBranchSubNodeContent = () => <>Left branch sub-node content</>,
   rightBranchSubNodeContent = () => <>Right branch sub-node content</>,
@@ -289,6 +292,17 @@ const SequenceBuilder = ({
     }
 
     const selectedNode = nodes.find((n) => n.id === selectedNodeId);
+    // To avoid adding intermediate nodes
+    const edgesConnectedToSelectedNode = edges.filter(
+      (edge) => edge.from === selectedNodeId || edge.to === selectedNodeId
+    );
+    if (
+      edgesConnectedToSelectedNode &&
+      edgesConnectedToSelectedNode.length === 2
+    ) {
+      console.error("Intermediate node selected", edgesConnectedToSelectedNode);
+      return;
+    }
     let newNodeX1 = selectedNode.x - 400;
     let newNodeY1 = selectedNode.y + 270;
 
@@ -360,6 +374,7 @@ const SequenceBuilder = ({
       <Board
         zoom={zoom}
         contentRef={contentRef}
+        boardStyles={boardStyles}
         containerRef={containerRef}
         draggingNode={draggingNode}
         handleMouseUp={handleMouseUp}
@@ -369,7 +384,7 @@ const SequenceBuilder = ({
         handleMouseMove={handleMouseMove}
       >
         {nodes.length === 0 && <div ref={centerRef}>.</div>}
-        <Edges edges={edges} nodes={nodes} />
+        <Edges edges={edges} nodes={nodes} stroke={edgeStroke} />
         {nodes.map((node, index) => (
           <Node
             node={node}
@@ -392,9 +407,10 @@ const SequenceBuilder = ({
         addNode={addNode}
         removeNode={removeNode}
         stepTypeMap={stepTypeMap}
-        conditionMap={conditionsMap}
+        conditionsMap={conditionsMap}
         selectedNodeId={selectedNodeId}
         showMoreButtons={showMoreButtons}
+        uniqueStepTypes={uniqueStepTypes}
         setShowMoreButtons={setShowMoreButtons}
         scrollBackToContent={scrollBackToContent}
         addConditionalBranches={addConditionalBranches}
