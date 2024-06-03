@@ -12,7 +12,12 @@ const Node = ({
   setSelectedNodeId,
   subNodeStyles = {},
 }) => {
-  const nodeBackgroundColor = selectedNodeId === node.id ? "#d3d3d3" : "white";
+  const nodeBackgroundColor =
+    selectedNodeId === node.id
+      ? nodeStyles?.backgroundColorOnSelect
+        ? nodeStyles.backgroundColorOnSelect
+        : "#d3d3d3"
+      : "white";
   const nodeBorderColor = selectedNodeId === node.id ? "grey" : "white";
   const subNodeBorderColor = selectedNodeId === node.id ? "grey" : "white";
 
@@ -41,8 +46,8 @@ const Node = ({
               justifyContent: nodeStyles?.justifyContent
                 ? nodeStyles.justifyContent
                 : "center",
-              alignItems: nodeStyles?.justifyContent
-                ? nodeStyles.justifyContent
+              alignItems: nodeStyles?.alignItems
+                ? nodeStyles.alignItems
                 : "center",
               fontSize: nodeStyles?.fontSize ? nodeStyles.fontSize : "26px",
               backgroundColor: nodeStyles?.backgroundColor
