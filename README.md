@@ -59,7 +59,7 @@ The SequilderBuilder component has the following props:
     justifyContent: "center",
     fontSize: "26px",
     backgroundColor: "#white",
-    backgroundColorOnSelect: "d3d3d3",
+    backgroundColorOnSelect: "#d3d3d3",
     border: "1px solid white",
     boxSizing: "border-box",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
@@ -78,7 +78,6 @@ The SequilderBuilder component has the following props:
     justifyContent: "center",
     fontSize: "20px",
     backgroundColor: "lightblue",
-    backgroundColorOnSelect: "d3d3d3",
     border: "1px solid white",
     boxSizing: "border-box",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
@@ -94,6 +93,12 @@ The SequilderBuilder component has the following props:
     fontFamily: "sans-serif",
     columnGap: "10px"
   }
+```
+
+- edgeStroke
+
+```
+  "lightgrey"
 ```
 
 - stepTypeMap
