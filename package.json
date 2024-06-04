@@ -9,6 +9,13 @@
   "files": [
     "dist"
   ],
+  "repository": {
+		"type": "git",
+		"url": "git+https://github.com/amitkumar98/react-sequence-builder.git"
+	},
+	"keywords": [
+		"sequence", "sequence-builder", "react-sequence-builder", "flowchart"
+	]
   "scripts": {
     "dev": "vite",
     "build": "vite build",
