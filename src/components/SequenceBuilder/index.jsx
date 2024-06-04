@@ -20,6 +20,7 @@ const SequenceBuilder = ({
   nodeIconMap = {},
   boardStyles = {},
   stepTypeMap = {},
+  addSubNode = false,
   subNodeStyles = {},
   wrapperStyles = {},
   conditionsMap = {},
@@ -181,39 +182,71 @@ const SequenceBuilder = ({
       newNodeY = centerY - 300;
     }
 
-    const delayNode = {
-      id: crypto.randomUUID(),
-      x: newNodeX,
-      y: newNodeY,
-      stepNumber,
-      nodeType: "SUB_NODE",
-      nodeText: subNodeContent(),
-    };
-    const newNode = {
-      id: crypto.randomUUID(),
-      x: newNodeX - 75,
-      y: newNodeY + 150,
-      stepType,
-      stepNumber: stepNumber + 1,
-      nodeType: "NODE",
-    };
-    setNodes([...nodes, delayNode, newNode]);
+    let subNode;
+    let newNode;
+    if (addSubNode) {
+      subNode = {
+        id: crypto.randomUUID(),
+        x: newNodeX,
+        y: newNodeY,
+        stepNumber,
+        nodeType: "SUB_NODE",
+        nodeText: subNodeContent(),
+      };
+      newNode = {
+        id: crypto.randomUUID(),
+        x: newNodeX - 75,
+        y: newNodeY + 150,
+        stepType,
+        stepNumber: stepNumber + 1,
+        nodeType: "NODE",
+      };
+      setNodes([...nodes, subNode, newNode]);
+    } else {
+      newNode = {
+        id: crypto.randomUUID(),
+        x: newNodeX - 75,
+        y: newNodeY + 100,
+        stepType,
+        stepNumber: stepNumber,
+        nodeType: "NODE",
+      };
+      setNodes([...nodes, newNode]);
+    }
 
-    // Add an edge if there is at least one existing node
+    // Case 1: When existing nodes are there
     if (nodes.length > 0) {
       const selectedNode = nodes.find((n) => n.id === selectedNodeId);
-      const lastEdgeNumber = edges[edges.length - 1].edgeNumber;
-      setEdges([
-        ...edges,
-        {
-          from: selectedNode.id,
-          to: delayNode.id,
-          edgeNumber: lastEdgeNumber + 1,
-        },
-        { from: delayNode.id, to: newNode.id, edgeNumber: lastEdgeNumber + 2 },
-      ]);
-    } else {
-      setEdges([...edges, { from: delayNode.id, to: newNode.id, edgeNumber }]);
+      const lastEdgeNumber = edges[edges.length - 1]
+        ? edges[edges.length - 1].edgeNumber
+        : 0;
+
+      if (addSubNode) {
+        setEdges([
+          ...edges,
+          {
+            from: selectedNode.id,
+            to: subNode.id,
+            edgeNumber: lastEdgeNumber + 1,
+          },
+          { from: subNode.id, to: newNode.id, edgeNumber: lastEdgeNumber + 2 },
+        ]);
+      } else {
+        setEdges([
+          ...edges,
+          {
+            from: selectedNode.id,
+            to: newNode.id,
+            edgeNumber: lastEdgeNumber + 1,
+          },
+        ]);
+      }
+    }
+    // Case 2: 1st node
+    else {
+      if (addSubNode) {
+        setEdges([...edges, { from: subNode.id, to: newNode.id, edgeNumber }]);
+      }
     }
     setSelectedNodeId(newNode.id);
   };
