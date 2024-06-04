@@ -1,6 +1,6 @@
 {
   "name": "react-sequence-builder",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "type": "module",
   "main": "dist/sequence-builder.umd.js",
@@ -10,12 +10,15 @@
     "dist"
   ],
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/amitkumar98/react-sequence-builder.git"
-	},
-	"keywords": [
-		"sequence", "sequence-builder", "react-sequence-builder", "flowchart"
-	],
+    "type": "git",
+    "url": "git+https://github.com/amitkumar98/react-sequence-builder.git"
+  },
+  "keywords": [
+    "sequence",
+    "sequence-builder",
+    "react-sequence-builder",
+    "flowchart"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
