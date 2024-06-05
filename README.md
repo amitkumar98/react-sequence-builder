@@ -49,6 +49,12 @@ Props:
 
 The SequilderBuilder component has the following props:
 
+- addSubNode
+
+```
+  accepts boolean, default - false
+```
+
 - nodeStyles
 
 ```
