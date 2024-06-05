@@ -119,17 +119,17 @@ The SequilderBuilder component has the following props:
   }
 ```
 
-- uniqueStepTypes - Can have only one node of this step type
+- uniqueStepTypes - Can have only one node of these step types
 
 ```
-  ['stepTypeKey']
+  [...stepTypeKeys]
 ```
 
 - iconsMap
 
 ```
     {
-      iconName: "URL",
+      iconName: "URL" || () => <Icon/>,
       ...
     }
 ```
@@ -149,6 +149,31 @@ The SequilderBuilder component has the following props:
     {
       stepTypeKey: "iconName",
       ...
+    }
+```
+
+- branchesStepRestriction
+
+```
+    {
+      "conditionKey": {
+        "left-branch": [...restrictedStepTypeKeys],
+        "right-branch": [...restrictedStepTypeKeys],
+    },
+  }
+```
+
+- allowedConditionalBranches
+
+```
+   accepts integer >= 0
+```
+
+- conditionalBranchAllowedSteps
+
+```
+    {
+      "conditionKey": [...allowedRootStepTypeKeysForThisCondition],
     }
 ```
 
