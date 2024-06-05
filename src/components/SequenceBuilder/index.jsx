@@ -49,6 +49,8 @@ const SequenceBuilder = ({
   const [dragStartBoard, setDragStartBoard] = useState({ x: 0, y: 0 });
   const [dragOffsetBoard, setDragOffsetBoard] = useState({ x: 0, y: 0 });
 
+  let lowestStepNumber = nodes[0]?.stepNumber;
+
   const scrollBackToContent = useCallback(() => {
     if (nodes.length > 0) {
       nodeRef.current?.scrollIntoView({
@@ -168,7 +170,7 @@ const SequenceBuilder = ({
           edgesConnectedToSelectedNode.length === 2
         ) {
           console.error(
-            "Intermediate node selected",
+            "Can't add node to an intermediate node",
             edgesConnectedToSelectedNode
           );
           return;
@@ -177,6 +179,16 @@ const SequenceBuilder = ({
         newNodeX = selectedNode.x + 75;
         newNodeY = selectedNode.y + 150;
         stepNumber = selectedNode.stepNumber + 1;
+        if (
+          !addSubNode &&
+          nodes.length > 1 &&
+          selectedNode.stepNumber === lowestStepNumber
+        ) {
+          console.error(
+            "Can't add node to first node when number of nodes is higher than 1"
+          );
+          return;
+        }
       }
     } else {
       const centerX = centerRef.current.offsetLeft;
@@ -322,7 +334,7 @@ const SequenceBuilder = ({
           edgesConnectedToSelectedNode.length === 2
         ) {
           console.error(
-            "Intermediate or first node selected",
+            "Can't remove the intermediate or first node",
             edgesConnectedToSelectedNode
           );
           return;
@@ -385,7 +397,10 @@ const SequenceBuilder = ({
       edgesConnectedToSelectedNode &&
       edgesConnectedToSelectedNode.length === 2
     ) {
-      console.error("Intermediate node selected", edgesConnectedToSelectedNode);
+      console.error(
+        "Can't add conditional branch to intermediate node",
+        edgesConnectedToSelectedNode
+      );
       return;
     }
     let newNodeX1 = selectedNode.x - 400;
