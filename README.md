@@ -3,6 +3,13 @@
 - Create sequence flow diagrams using react.
 - It only uses react and react-dom as dependencies.
 
+## Installation
+
+```
+npm install react-sequence-builder
+yarn add react-sequence-builder
+```
+
 ## Usage example
 
 - index.jsx
