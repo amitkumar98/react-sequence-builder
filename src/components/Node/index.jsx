@@ -22,12 +22,17 @@ const Node = ({
   const subNodeBorderColor = selectedNodeId === node.id ? "grey" : "white";
 
   let iconURI = "";
-  // iconsMap -> { iconName: "URI" }, nodeIconMap -> { stepType: "iconName" }
+  let iconElement;
+  // iconsMap -> { iconName: "URI || <Icon/>" }, nodeIconMap -> { stepType: "iconName" }
   if (Object.keys(iconsMap).length > 0 && Object.keys(nodeIconMap).length > 0) {
     if (node.nodeType === "NODE") {
       const stepType = nodeIconMap[node.stepType];
       if (stepType) {
-        iconURI = iconsMap[stepType];
+        if (typeof iconsMap[stepType] === "string") {
+          iconURI = iconsMap[stepType];
+        } else if (typeof iconsMap[stepType] === "function") {
+          iconElement = iconsMap[stepType];
+        }
       }
     }
   }
@@ -108,16 +113,18 @@ const Node = ({
     >
       {node.nodeType === "NODE" ? (
         <div>
-          {iconURI.length > 0 && (
-            <img
-              style={{
-                width: iconStyles?.width ? iconStyles.width : "32px",
-                height: iconStyles?.height ? iconStyles.height : "32px",
-              }}
-              src={iconURI}
-              alt={"step-icon"}
-            />
-          )}
+          {iconElement
+            ? iconElement()
+            : iconURI.length > 0 && (
+                <img
+                  style={{
+                    width: iconStyles?.width ? iconStyles.width : "32px",
+                    height: iconStyles?.height ? iconStyles.height : "32px",
+                  }}
+                  src={iconURI}
+                  alt={"step-icon"}
+                />
+              )}
           <span>{stepTypeMap[node.stepType]}</span>
         </div>
       ) : (
