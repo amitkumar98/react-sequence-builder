@@ -1,6 +1,7 @@
 # React Sequence Builder
 
-- Create sequence flow diagrams using React.
+- Create sequence flow diagrams using react.
+- It only uses react and react-dom as dependencies.
 
 ## Usage example
 
