@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /* eslint-disable react/prop-types */
 const filterFromObject = (object, condition) => {
   return Object.entries(object).reduce((acc, [key, value]) => {
@@ -20,14 +22,101 @@ const Controls = ({
   setShowMoreButtons,
   scrollBackToContent,
   addConditionalBranches,
+  branchesStepRestriction,
+  allowedConditionalBranches,
+  conditionalBranchAllowedSteps,
 }) => {
+  let filteredStepTypeMap = stepTypeMap;
+  let addConditionalBranchButtonDisabled = nodes.length === 0;
+  let filteredLeftBranchStepTypeMap = stepTypeMap;
+  let filteredRightBranchStepTypeMap = stepTypeMap;
+
+  const [selectedCondition, setSelectedCondition] = useState(
+    Object.keys(conditionsMap)[0]
+  );
+
+  const conditionalBranches = nodes.filter((node) => node.isConditional);
+  if (conditionalBranches) {
+    addConditionalBranchButtonDisabled =
+      conditionalBranches.length > allowedConditionalBranches;
+  }
+
+  const selectedNode = nodes.find((node) => node.id === selectedNodeId);
+  if (selectedNode) {
+    const condition = selectedNode.condition;
+    if (condition) {
+      const restrictionForCondition = branchesStepRestriction[condition];
+      if (restrictionForCondition) {
+        const selectedSideRestriction =
+          restrictionForCondition[selectedNode.branchSide];
+        if (selectedSideRestriction && selectedSideRestriction.length > 0) {
+          filteredStepTypeMap = filterFromObject(
+            filteredStepTypeMap,
+            (key) => selectedSideRestriction.indexOf(key) === -1
+          );
+        }
+      }
+    } else {
+      if (selectedCondition) {
+        const restrictionForCondition =
+          branchesStepRestriction[selectedCondition];
+        if (restrictionForCondition) {
+          const leftBranchRestrictedSteps =
+            restrictionForCondition["left-branch"];
+          const rightBranchRestrictedSteps =
+            restrictionForCondition["right-branch"];
+          filteredLeftBranchStepTypeMap = filterFromObject(
+            filteredLeftBranchStepTypeMap,
+            (key) => leftBranchRestrictedSteps.indexOf(key) === -1
+          );
+          filteredRightBranchStepTypeMap = filterFromObject(
+            filteredRightBranchStepTypeMap,
+            (key) => rightBranchRestrictedSteps.indexOf(key) === -1
+          );
+        }
+      }
+    }
+    if (selectedNode?.rootBranchNodeUuid) {
+      const branchSide = selectedNode.branchSide;
+      const restrictionForCondition =
+        branchesStepRestriction[selectedNode.condition];
+      if (restrictionForCondition) {
+        if (branchSide === "right-branch") {
+          const rightBranchRestrictedSteps =
+            restrictionForCondition["right-branch"];
+          filteredRightBranchStepTypeMap = filterFromObject(
+            filteredRightBranchStepTypeMap,
+            (key) => rightBranchRestrictedSteps.indexOf(key) === -1
+          );
+        } else if (branchSide === "left-side") {
+          const leftBranchRestrictedSteps =
+            restrictionForCondition["left-branch"];
+          filteredLeftBranchStepTypeMap = filterFromObject(
+            filteredLeftBranchStepTypeMap,
+            (key) => leftBranchRestrictedSteps.indexOf(key) === -1
+          );
+        }
+      }
+    }
+    const allowedRootStepForSelectedCondition =
+      conditionalBranchAllowedSteps[condition || selectedCondition];
+
+    if (
+      allowedRootStepForSelectedCondition &&
+      allowedRootStepForSelectedCondition.length > 0
+    ) {
+      addConditionalBranchButtonDisabled =
+        allowedRootStepForSelectedCondition.indexOf(selectedNode.stepType) ===
+        -1;
+    }
+  }
+
   const node = nodes.find(
     (node) => uniqueStepTypes.indexOf(node.stepType) > -1
   );
-  let filteredStepTypeMap = stepTypeMap;
   if (node) {
     filteredStepTypeMap = filterFromObject(
-      stepTypeMap,
+      filteredStepTypeMap,
       (key) => uniqueStepTypes.indexOf(key) === -1
     );
   }
@@ -54,13 +143,17 @@ const Controls = ({
         onClick={addNode}
         style={{ marginBottom: "10px" }}
         className="actionButtonPrimary"
+        // ToDo: add disabled prop based on multiple conditions
       >
         Add step
       </button>
       <button
         onClick={removeNode}
         style={{ marginBottom: "10px" }}
-        disabled={!selectedNodeId}
+        // ToDo: Improve this to allow removing 1st node in left branch
+        disabled={
+          !selectedNodeId || selectedNode?.stepNumber < nodes.length - 1
+        }
         className="actionButtonPrimary"
       >
         Remove step
@@ -70,7 +163,12 @@ const Controls = ({
           <div>
             <label htmlFor="condition">Choose condition:</label>
             <br />
-            <select name="condition" id="condition">
+            <select
+              name="condition"
+              id="condition"
+              value={selectedCondition}
+              onChange={(e) => setSelectedCondition(e.target.value)}
+            >
               {Object.keys(conditionsMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
                   {conditionsMap[option]}
@@ -89,12 +187,12 @@ const Controls = ({
             </label>
             <br />
             <select name="left_step_type" id="left_step_type">
-              {Object.keys(filteredStepTypeMap).map((option) => (
+              {Object.keys(filteredLeftBranchStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
-                  {filteredStepTypeMap[option]}
+                  {filteredLeftBranchStepTypeMap[option]}
                 </option>
               ))}
-              {Object.keys(filteredStepTypeMap).length === 0 && (
+              {Object.keys(filteredLeftBranchStepTypeMap).length === 0 && (
                 <option value={"-------"} key={crypto.randomUUID()}>
                   ------- Select -------
                 </option>
@@ -107,12 +205,12 @@ const Controls = ({
             </label>
             <br />
             <select name="right_step_type" id="right_step_type">
-              {Object.keys(filteredStepTypeMap).map((option) => (
+              {Object.keys(filteredRightBranchStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
-                  {filteredStepTypeMap[option]}
+                  {filteredRightBranchStepTypeMap[option]}
                 </option>
               ))}
-              {Object.keys(filteredStepTypeMap).length === 0 && (
+              {Object.keys(filteredRightBranchStepTypeMap).length === 0 && (
                 <option value={"-------"} key={crypto.randomUUID()}>
                   ------- Select -------
                 </option>
@@ -128,7 +226,7 @@ const Controls = ({
             : () => setShowMoreButtons(true)
         }
         style={{ marginBottom: "10px" }}
-        disabled={nodes.length === 0}
+        disabled={addConditionalBranchButtonDisabled}
         className="actionButtonPrimary"
       >
         Add conditional branch

@@ -25,6 +25,9 @@ const SequenceBuilder = ({
   wrapperStyles = {},
   conditionsMap = {},
   uniqueStepTypes = [],
+  branchesStepRestriction = {},
+  allowedConditionalBranches = 1,
+  conditionalBranchAllowedSteps = {},
   subNodeContent = () => <>Sub-Node content</>,
   leftBranchSubNodeContent = () => <>Left branch sub-node content</>,
   rightBranchSubNodeContent = () => <>Right branch sub-node content</>,
@@ -141,11 +144,12 @@ const SequenceBuilder = ({
     let newNodeY;
     let stepNumber = 0;
     let edgeNumber = 0;
+    let selectedNode = null;
     if (nodes.length > 0) {
       if (!selectedNodeId) {
         return;
       }
-      const selectedNode = nodes.find((n) => n.id === selectedNodeId);
+      selectedNode = nodes.find((n) => n.id === selectedNodeId);
 
       if (selectedNode && selectedNode.nodeType === "SUB_NODE") {
         console.error(
@@ -192,6 +196,18 @@ const SequenceBuilder = ({
         stepNumber,
         nodeType: "SUB_NODE",
         nodeText: subNodeContent(),
+        condition:
+          selectedNode && selectedNode.condition
+            ? selectedNode.condition
+            : null,
+        branchSide:
+          selectedNode && selectedNode.branchSide
+            ? selectedNode.branchSide
+            : null,
+        rootBranchNodeUuid:
+          selectedNode && selectedNode.rootBranchNodeUuid
+            ? selectedNode.rootBranchNodeUuid
+            : null,
       };
       newNode = {
         id: crypto.randomUUID(),
@@ -200,6 +216,18 @@ const SequenceBuilder = ({
         stepType,
         stepNumber: stepNumber + 1,
         nodeType: "NODE",
+        condition:
+          selectedNode && selectedNode.condition
+            ? selectedNode.condition
+            : null,
+        branchSide:
+          selectedNode && selectedNode.branchSide
+            ? selectedNode.branchSide
+            : null,
+        rootBranchNodeUuid:
+          selectedNode && selectedNode.rootBranchNodeUuid
+            ? selectedNode.rootBranchNodeUuid
+            : null,
       };
       setNodes([...nodes, subNode, newNode]);
     } else {
@@ -210,6 +238,18 @@ const SequenceBuilder = ({
         stepType,
         stepNumber: stepNumber,
         nodeType: "NODE",
+        condition:
+          selectedNode && selectedNode.condition
+            ? selectedNode.condition
+            : null,
+        branchSide:
+          selectedNode && selectedNode.branchSide
+            ? selectedNode.branchSide
+            : null,
+        rootBranchNodeUuid:
+          selectedNode && selectedNode.rootBranchNodeUuid
+            ? selectedNode.rootBranchNodeUuid
+            : null,
       };
       setNodes([...nodes, newNode]);
     }
@@ -277,11 +317,12 @@ const SequenceBuilder = ({
           (edge) => edge.from === selectedNodeId || edge.to === selectedNodeId
         );
         if (
-          edgesConnectedToSelectedNode &&
+          (selectedNode.stepNumber === 0 &&
+            edgesConnectedToSelectedNode.length === 1) ||
           edgesConnectedToSelectedNode.length === 2
         ) {
           console.error(
-            "Intermediate node selected",
+            "Intermediate or first node selected",
             edgesConnectedToSelectedNode
           );
           return;
@@ -293,7 +334,7 @@ const SequenceBuilder = ({
         const subNodeToDelete = newNodes.find(
           (node) =>
             node.stepNumber === selectedNode.stepNumber - 1 &&
-            node.stepType !== "NODE"
+            node.nodeType !== "NODE"
         );
 
         if (subNodeToDelete) {
@@ -324,7 +365,18 @@ const SequenceBuilder = ({
       return;
     }
 
+    const conditionalBranches = nodes.filter((node) => node.isConditional);
+    if (conditionalBranches.length > allowedConditionalBranches) {
+      console.error(
+        "Maximum number of conditional branches allowed is ",
+        allowedConditionalBranches
+      );
+      return;
+    }
+
     const selectedNode = nodes.find((n) => n.id === selectedNodeId);
+
+    const condition = document.getElementById("condition").value;
     // To avoid adding intermediate nodes
     const edgesConnectedToSelectedNode = edges.filter(
       (edge) => edge.from === selectedNodeId || edge.to === selectedNodeId
@@ -347,13 +399,16 @@ const SequenceBuilder = ({
     const rightBranchStepType =
       document.getElementById("right_step_type").value;
 
-    const delayNode1 = {
+    const subNode1 = {
       id: crypto.randomUUID(),
       x: newNodeX1,
       y: newNodeY1,
       stepNumber: stepNumber + 1,
       nodeType: "SUB_NODE",
       nodeText: leftBranchSubNodeContent(),
+      condition,
+      branchSide: "left-branch",
+      rootBranchNodeUuid: selectedNode.id,
     };
     const newNode1 = {
       id: crypto.randomUUID(),
@@ -362,14 +417,20 @@ const SequenceBuilder = ({
       stepNumber: stepNumber + 2,
       stepType: leftBranchStepType,
       nodeType: "NODE",
+      condition,
+      branchSide: "left-branch",
+      rootBranchNodeUuid: selectedNode.id,
     };
-    const delayNode2 = {
+    const subNode2 = {
       id: crypto.randomUUID(),
       x: newNodeX2,
       y: newNodeY2,
       stepNumber: stepNumber + 3,
       nodeType: "SUB_NODE",
       nodeText: rightBranchSubNodeContent(),
+      condition,
+      branchSide: "right-branch",
+      rootBranchNodeUuid: selectedNode.id,
     };
     const newNode2 = {
       id: crypto.randomUUID(),
@@ -378,15 +439,19 @@ const SequenceBuilder = ({
       stepNumber: stepNumber + 4,
       stepType: rightBranchStepType,
       nodeType: "NODE",
+      condition,
+      branchSide: "right-branch",
+      rootBranchNodeUuid: selectedNode.id,
     };
     selectedNode.isConditional = true;
-    setNodes([...nodes, delayNode1, newNode1, delayNode2, newNode2]);
+    selectedNode.condition = condition;
+    setNodes([...nodes, subNode1, newNode1, subNode2, newNode2]);
     setEdges([
       ...edges,
-      { from: selectedNode.id, to: delayNode1.id },
-      { from: delayNode1.id, to: newNode1.id },
-      { from: selectedNode.id, to: delayNode2.id },
-      { from: delayNode2.id, to: newNode2.id },
+      { from: selectedNode.id, to: subNode1.id },
+      { from: subNode1.id, to: newNode1.id },
+      { from: selectedNode.id, to: subNode2.id },
+      { from: subNode2.id, to: newNode2.id },
     ]);
     setSelectedNodeId(newNode1.id);
     setShowMoreButtons(false);
@@ -447,6 +512,9 @@ const SequenceBuilder = ({
         setShowMoreButtons={setShowMoreButtons}
         scrollBackToContent={scrollBackToContent}
         addConditionalBranches={addConditionalBranches}
+        branchesStepRestriction={branchesStepRestriction}
+        allowedConditionalBranches={allowedConditionalBranches}
+        conditionalBranchAllowedSteps={conditionalBranchAllowedSteps}
       />
     </div>
   );
