@@ -39,7 +39,7 @@ import { SequenceBuilder, useSequenceBuilder } from "react-sequence-builder";
 function SequenceBuilderWrapper() {
 
   // Get nodes
-  const { nodes, handleSetNodes } = useSequenceBuilder();
+  const { nodes, handleSetNodes, selectedNodeId, setSelectedNodeId } = useSequenceBuilder();
 
   return (
     <>
@@ -181,6 +181,12 @@ The SequilderBuilder component has the following props:
 
 ```
    accepts integer >= 0
+```
+
+- onNodeDoubleClick
+
+```
+() => console.log("Node double clicked");
 ```
 
 - conditionalBranchAllowedSteps
