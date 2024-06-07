@@ -3,14 +3,9 @@ import Node from "../Node";
 import Edges from "../Edges";
 import Board from "../Board";
 import Controls from "../Controls";
+import { wait } from "../../utils/common";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useSequenceBuilder } from "../../context/SequenceBuilderContext";
-
-function wait(seconds) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 500);
-  });
-}
 
 const SequenceBuilder = ({
   edgeStroke,
@@ -29,10 +24,16 @@ const SequenceBuilder = ({
   allowedConditionalBranches = 1,
   conditionalBranchAllowedSteps = {},
   subNodeContent = () => <>Sub-Node content</>,
+  onNodeDoubleClick = () => console.log("Node double clicked"),
   leftBranchSubNodeContent = () => <>Left branch sub-node content</>,
   rightBranchSubNodeContent = () => <>Right branch sub-node content</>,
 }) => {
-  const { nodes, handleSetNodes: setNodes } = useSequenceBuilder();
+  const {
+    nodes,
+    handleSetNodes: setNodes,
+    selectedNodeId,
+    handleSetSelectedNodeId: setSelectedNodeId,
+  } = useSequenceBuilder();
 
   const nodeRef = useRef(null);
   const centerRef = useRef(null);
@@ -42,7 +43,6 @@ const SequenceBuilder = ({
   const [zoom, setZoom] = useState(0.6);
   const [edges, setEdges] = useState([]);
   const [draggingNode, setDraggingNode] = useState(null);
-  const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [isDraggingBoard, setIsDraggingBoard] = useState(false);
   const [showMoreButtons, setShowMoreButtons] = useState(false);
   const [dragStartNode, setDragStartNode] = useState({ x: 0, y: 0 });
@@ -511,6 +511,7 @@ const SequenceBuilder = ({
             nodeIconMap={nodeIconMap}
             subNodeStyles={subNodeStyles}
             selectedNodeId={selectedNodeId}
+            onNodeDoubleClick={onNodeDoubleClick}
             setSelectedNodeId={setSelectedNodeId}
           />
         ))}

@@ -6,9 +6,14 @@ const SequenceBuilderContext = createContext(undefined);
 
 export const SequenceBuilderProvider = ({ children }) => {
   const [nodes, setNodes] = useState([]);
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
 
   const handleSetNodes = (newNodes) => {
     setNodes(newNodes);
+  };
+
+  const handleSetSelectedNodeId = (newSelectedNodeId) => {
+    setSelectedNodeId(newSelectedNodeId);
   };
 
   return (
@@ -16,6 +21,8 @@ export const SequenceBuilderProvider = ({ children }) => {
       value={{
         nodes,
         handleSetNodes,
+        selectedNodeId,
+        handleSetSelectedNodeId,
       }}
     >
       {children}

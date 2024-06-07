@@ -9,6 +9,7 @@ const Node = ({
   iconStyles = {},
   nodeIconMap = {},
   stepTypeMap = {},
+  onNodeDoubleClick,
   setSelectedNodeId,
   subNodeStyles = {},
 }) => {
@@ -40,6 +41,7 @@ const Node = ({
   return (
     <div
       onClick={() => setSelectedNodeId(node.id)}
+      onDoubleClick={() => onNodeDoubleClick()}
       ref={index === 0 ? nodeRef : null}
       data-node-id={node.id}
       style={
