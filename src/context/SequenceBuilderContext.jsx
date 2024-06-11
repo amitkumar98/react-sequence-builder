@@ -12,7 +12,7 @@ export const SequenceBuilderProvider = ({ children }) => {
 
   const handleSetNodes = (newNodes) => {
     setNodes(newNodes);
-    if (nodes.length > 1) {
+    if (newNodes.length > 1) {
       const newEdges = getEdgesFromNodes(newNodes);
       setEdges(newEdges);
     }

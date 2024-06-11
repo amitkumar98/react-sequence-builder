@@ -17,7 +17,7 @@ export const getEdgesFromNodes = (nodes) => {
   const mainSequenceNodes = nodes.filter((node) => !node.branchSide);
   mainSequenceNodes.sort((a, b) => a.stepNumber - b.stepNumber);
 
-  for (let i = 1; i < mainSequenceNodes.length - 1; i++) {
+  for (let i = 1; i < mainSequenceNodes.length; i++) {
     newEdges.push({
       from: mainSequenceNodes[i - 1].id,
       to: mainSequenceNodes[i].id,
