@@ -35,10 +35,16 @@ const Controls = ({
     Object.keys(conditionsMap)[0]
   );
 
-  const conditionalBranches = nodes.filter((node) => node.isConditional);
-  if (conditionalBranches) {
+  let conditionalNode;
+  let firstBranchNode = false;
+  const conditionalNodes = nodes.filter((node) => node.isConditional);
+  if (conditionalNodes) {
     addConditionalBranchButtonDisabled =
-      conditionalBranches.length > allowedConditionalBranches;
+      conditionalNodes.length >= allowedConditionalBranches;
+    // ToDo: update to support multiple conditional branches
+    if (conditionalNodes.length > 0) {
+      conditionalNode = conditionalNodes[0];
+    }
   }
 
   const selectedNode = nodes.find((node) => node.id === selectedNodeId);
@@ -109,6 +115,12 @@ const Controls = ({
         allowedRootStepForSelectedCondition.indexOf(selectedNode.stepType) ===
         -1;
     }
+
+    if (conditionalNode) {
+      if (selectedNode.stepNumber === conditionalNode.stepNumber + 1) {
+        firstBranchNode = true;
+      }
+    }
   }
 
   const node = nodes.find(
@@ -117,7 +129,7 @@ const Controls = ({
   if (node) {
     filteredStepTypeMap = filterFromObject(
       filteredStepTypeMap,
-      (key) => uniqueStepTypes.indexOf(key) === -1
+      (key) => node.stepType !== key
     );
   }
 
@@ -150,9 +162,11 @@ const Controls = ({
       <button
         onClick={removeNode}
         style={{ marginBottom: "10px" }}
-        // ToDo: Improve this to allow removing 1st node in left branch
         disabled={
-          !selectedNodeId || selectedNode?.stepNumber < nodes.length - 1
+          !selectedNodeId ||
+          (!selectedNode.isConditional &&
+            selectedNode?.stepNumber < nodes[nodes.length - 1].stepNumber) ||
+          firstBranchNode
         }
         className="actionButtonPrimary"
       >
