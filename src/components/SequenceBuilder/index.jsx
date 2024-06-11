@@ -31,9 +31,9 @@ const SequenceBuilder = ({
   const {
     nodes,
     edges,
+    setNodes,
+    setEdges,
     selectedNodeId,
-    handleSetNodes: setNodes,
-    handleSetEdges: setEdges,
     handleSetSelectedNodeId: setSelectedNodeId,
   } = useSequenceBuilder();
 
@@ -326,13 +326,13 @@ const SequenceBuilder = ({
     if (selectedNode) {
       if (selectedNode.isConditional) {
         newNodes = nodes.filter(
-          (node) => node.stepNumber < selectedNode.stepNumber - 1
+          (node) => node.stepNumber < selectedNode.stepNumber
         );
         const selectedNodeEdge = edges.find(
           (edge) => edge.to === selectedNodeId
         );
         newEdges = edges.filter(
-          (edge) => edge.edgeNumber < selectedNodeEdge.edgeNumber - 1
+          (edge) => edge.edgeNumber < selectedNodeEdge.edgeNumber
         );
       } else {
         // To avoid removing intermediate nodes
@@ -356,7 +356,7 @@ const SequenceBuilder = ({
         // check and remove if any sub-node attached to the selected node
         const subNodeToDelete = newNodes.find(
           (node) =>
-            node.stepNumber === selectedNode.stepNumber - 1 &&
+            node.stepNumber === selectedNode.stepNumber &&
             node.nodeType !== "NODE"
         );
 
