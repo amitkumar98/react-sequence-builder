@@ -11,13 +11,11 @@ export const SequenceBuilderProvider = ({ children }) => {
   const [selectedNodeId, setSelectedNodeId] = useState(null);
 
   const handleSetNodes = (newNodes) => {
-    const newEdges = getEdgesFromNodes(newNodes);
     setNodes(newNodes);
-    setEdges(newEdges);
-  };
-
-  const handleSetEdges = (newEdges) => {
-    setEdges(newEdges);
+    if (nodes.length > 1) {
+      const newEdges = getEdgesFromNodes(newNodes);
+      setEdges(newEdges);
+    }
   };
 
   const handleSetSelectedNodeId = (newSelectedNodeId) => {
@@ -29,8 +27,9 @@ export const SequenceBuilderProvider = ({ children }) => {
       value={{
         nodes,
         edges,
+        setNodes,
+        setEdges,
         handleSetNodes,
-        handleSetEdges,
         selectedNodeId,
         handleSetSelectedNodeId,
       }}
