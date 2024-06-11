@@ -30,8 +30,10 @@ const SequenceBuilder = ({
 }) => {
   const {
     nodes,
-    handleSetNodes: setNodes,
+    edges,
     selectedNodeId,
+    handleSetNodes: setNodes,
+    handleSetEdges: setEdges,
     handleSetSelectedNodeId: setSelectedNodeId,
   } = useSequenceBuilder();
 
@@ -41,7 +43,6 @@ const SequenceBuilder = ({
   const containerRef = useRef(null);
 
   const [zoom, setZoom] = useState(0.6);
-  const [edges, setEdges] = useState([]);
   const [draggingNode, setDraggingNode] = useState(null);
   const [isDraggingBoard, setIsDraggingBoard] = useState(false);
   const [showMoreButtons, setShowMoreButtons] = useState(false);
@@ -131,6 +132,16 @@ const SequenceBuilder = ({
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (nodeRef.current) {
+      nodeRef.current?.scrollIntoView({
+        behavior: "instant",
+        block: "start",
+        inline: "center",
+      });
+    }
+  }, [nodes]);
 
   useEffect(() => {
     const board = contentRef.current;
@@ -408,7 +419,7 @@ const SequenceBuilder = ({
 
     let newNodeX2 = newNodeX1 + 950;
     let newNodeY2 = newNodeY1;
-    const stepNumber = selectedNode.stepNumber;
+    const stepNumber = selectedNode.stepNumber + 1;
 
     const leftBranchStepType = document.getElementById("left_step_type").value;
     const rightBranchStepType =
@@ -418,7 +429,7 @@ const SequenceBuilder = ({
       id: crypto.randomUUID(),
       x: newNodeX1,
       y: newNodeY1,
-      stepNumber: stepNumber + 1,
+      stepNumber: stepNumber,
       nodeType: "SUB_NODE",
       nodeText: leftBranchSubNodeContent(),
       condition,
@@ -429,7 +440,7 @@ const SequenceBuilder = ({
       id: crypto.randomUUID(),
       x: newNodeX1 - 75,
       y: newNodeY1 + 150,
-      stepNumber: stepNumber + 1,
+      stepNumber: stepNumber,
       stepType: leftBranchStepType,
       nodeType: "NODE",
       condition,
@@ -440,7 +451,7 @@ const SequenceBuilder = ({
       id: crypto.randomUUID(),
       x: newNodeX2,
       y: newNodeY2,
-      stepNumber: stepNumber + 2,
+      stepNumber: stepNumber,
       nodeType: "SUB_NODE",
       nodeText: rightBranchSubNodeContent(),
       condition,
@@ -451,7 +462,7 @@ const SequenceBuilder = ({
       id: crypto.randomUUID(),
       x: newNodeX2 - 75,
       y: newNodeY2 + 150,
-      stepNumber: stepNumber + 2,
+      stepNumber: stepNumber,
       stepType: rightBranchStepType,
       nodeType: "NODE",
       condition,
