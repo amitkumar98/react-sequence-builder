@@ -164,7 +164,8 @@ const Controls = ({
         style={{ marginBottom: "10px" }}
         disabled={
           !selectedNodeId ||
-          (!selectedNode.isConditional &&
+          (selectedNode &&
+            !selectedNode.isConditional &&
             selectedNode?.stepNumber < nodes[nodes.length - 1].stepNumber) ||
           firstBranchNode
         }
