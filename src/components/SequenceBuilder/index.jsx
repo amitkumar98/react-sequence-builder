@@ -5,7 +5,7 @@ import Board from "../Board";
 import Controls from "../Controls";
 import { wait } from "../../utils/common";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { useSequenceBuilder } from "../../context/SequenceBuilderContext";
+import { useSequenceBuilder, useSequenceBuilderInternal } from "../../hooks";
 
 const SequenceBuilder = ({
   edgeStroke,
@@ -28,14 +28,9 @@ const SequenceBuilder = ({
   leftBranchSubNodeContent = () => <>Left branch sub-node content</>,
   rightBranchSubNodeContent = () => <>Right branch sub-node content</>,
 }) => {
-  const {
-    nodes,
-    edges,
-    setNodes,
-    setEdges,
-    selectedNodeId,
-    handleSetSelectedNodeId: setSelectedNodeId,
-  } = useSequenceBuilder();
+  const { nodes, setNodes, selectedNodeId, setSelectedNodeId } =
+    useSequenceBuilder();
+  const { edges, setEdges } = useSequenceBuilderInternal();
 
   const nodeRef = useRef(null);
   const centerRef = useRef(null);
@@ -521,19 +516,15 @@ const SequenceBuilder = ({
             stepTypeMap={stepTypeMap}
             nodeIconMap={nodeIconMap}
             subNodeStyles={subNodeStyles}
-            selectedNodeId={selectedNodeId}
             onNodeDoubleClick={onNodeDoubleClick}
-            setSelectedNodeId={setSelectedNodeId}
           />
         ))}
       </Board>
       <Controls
-        nodes={nodes}
         addNode={addNode}
         removeNode={removeNode}
         stepTypeMap={stepTypeMap}
         conditionsMap={conditionsMap}
-        selectedNodeId={selectedNodeId}
         showMoreButtons={showMoreButtons}
         uniqueStepTypes={uniqueStepTypes}
         setShowMoreButtons={setShowMoreButtons}

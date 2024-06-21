@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import SequenceBuilder from "./components/SequenceBuilder";
-import { SequenceBuilderProvider } from "./context/SequenceBuilderContext";
+import { SequenceBuilderProvider } from "./context/SequenceBuilderProvider";
 
 ReactDOM.render(
   <React.StrictMode>

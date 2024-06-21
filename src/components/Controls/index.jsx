@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSequenceBuilder } from "../../hooks";
 
 /* eslint-disable react/prop-types */
 const filterFromObject = (object, condition) => {
@@ -11,12 +12,10 @@ const filterFromObject = (object, condition) => {
 };
 
 const Controls = ({
-  nodes,
   addNode,
   removeNode,
   stepTypeMap,
   conditionsMap,
-  selectedNodeId,
   showMoreButtons,
   uniqueStepTypes,
   setShowMoreButtons,
@@ -26,6 +25,8 @@ const Controls = ({
   allowedConditionalBranches,
   conditionalBranchAllowedSteps,
 }) => {
+  const { nodes, selectedNodeId } = useSequenceBuilder();
+
   let filteredStepTypeMap = stepTypeMap;
   let addConditionalBranchButtonDisabled = nodes.length === 0;
   let filteredLeftBranchStepTypeMap = stepTypeMap;

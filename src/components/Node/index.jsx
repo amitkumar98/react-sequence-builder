@@ -1,18 +1,20 @@
+import { useSequenceBuilder } from "../../hooks";
+
 /* eslint-disable react/prop-types */
 const Node = ({
   node,
   index,
   nodeRef,
   iconsMap = {},
-  selectedNodeId,
   nodeStyles = {},
   iconStyles = {},
   nodeIconMap = {},
   stepTypeMap = {},
   onNodeDoubleClick,
-  setSelectedNodeId,
   subNodeStyles = {},
 }) => {
+  const { selectedNodeId, setSelectedNodeId } = useSequenceBuilder();
+
   const nodeBackgroundColor =
     selectedNodeId === node.id
       ? nodeStyles?.backgroundColorOnSelect
