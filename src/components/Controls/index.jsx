@@ -113,8 +113,9 @@ const Controls = ({
       allowedRootStepForSelectedCondition.length > 0
     ) {
       addConditionalBranchButtonDisabled =
+        selectedNodeId !== nodes[nodes.length - 1].id ||
         allowedRootStepForSelectedCondition.indexOf(selectedNode.stepType) ===
-        -1;
+          -1;
     }
 
     if (conditionalNode) {
