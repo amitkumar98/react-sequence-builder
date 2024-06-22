@@ -435,7 +435,7 @@ const SequenceBuilder = ({
     };
     const newNode1 = {
       id: crypto.randomUUID(),
-      x: newNodeX1 - 75,
+      x: newNodeX1 - 115,
       y: newNodeY1 + 150,
       stepNumber: stepNumber,
       stepType: leftBranchStepType,
@@ -457,7 +457,7 @@ const SequenceBuilder = ({
     };
     const newNode2 = {
       id: crypto.randomUUID(),
-      x: newNodeX2 - 75,
+      x: newNodeX2 - 115,
       y: newNodeY2 + 150,
       stepNumber: stepNumber,
       stepType: rightBranchStepType,
