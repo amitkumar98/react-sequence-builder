@@ -98,3 +98,22 @@ export const getEdgesFromNodes = (nodes) => {
 
   return newEdges;
 };
+
+export const getIcon = (node, iconsMap, nodeIconMap) => {
+  let iconURI = "";
+  let iconElement;
+  // iconsMap -> { iconName: "URI || <Icon/>" }, nodeIconMap -> { stepType: "iconName" }
+  if (Object.keys(iconsMap).length > 0 && Object.keys(nodeIconMap).length > 0) {
+    if (node.nodeType === "NODE") {
+      const stepType = nodeIconMap[node.stepType];
+      if (stepType) {
+        if (typeof iconsMap[stepType] === "string") {
+          iconURI = iconsMap[stepType];
+        } else if (typeof iconsMap[stepType] === "function") {
+          iconElement = iconsMap[stepType];
+        }
+      }
+    }
+  }
+  return { iconURI, iconElement };
+};

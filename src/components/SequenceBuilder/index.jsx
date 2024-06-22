@@ -9,6 +9,7 @@ import { useSequenceBuilder, useSequenceBuilderInternal } from "../../hooks";
 
 const SequenceBuilder = ({
   edgeStroke,
+  nodeEndIcon,
   iconsMap = {},
   iconStyles = {},
   nodeStyles = {},
@@ -19,6 +20,7 @@ const SequenceBuilder = ({
   subNodeStyles = {},
   wrapperStyles = {},
   conditionsMap = {},
+  nodeContentMap = {},
   uniqueStepTypes = [],
   branchesStepRestriction = {},
   allowedConditionalBranches = 1,
@@ -513,9 +515,11 @@ const SequenceBuilder = ({
             iconsMap={iconsMap}
             iconStyles={iconStyles}
             nodeStyles={nodeStyles}
+            nodeEndIcon={nodeEndIcon}
             stepTypeMap={stepTypeMap}
             nodeIconMap={nodeIconMap}
             subNodeStyles={subNodeStyles}
+            nodeContentMap={nodeContentMap}
             onNodeDoubleClick={onNodeDoubleClick}
           />
         ))}

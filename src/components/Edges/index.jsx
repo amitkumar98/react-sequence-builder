@@ -18,10 +18,10 @@ const Edges = ({ edges, nodes, stroke }) => {
           <line
             key={crypto.randomUUID()}
             x1={
-              fromNode.nodeType === "NODE" ? fromNode.x + 200 : fromNode.x + 125
+              fromNode.nodeType === "NODE" ? fromNode.x + 240 : fromNode.x + 125
             }
             y1={fromNode.y + 50}
-            x2={toNode.nodeType === "NODE" ? toNode.x + 200 : toNode.x + 125}
+            x2={toNode.nodeType === "NODE" ? toNode.x + 240 : toNode.x + 125}
             y2={toNode.y + 50}
             stroke={stroke || "lightgrey"}
           />
