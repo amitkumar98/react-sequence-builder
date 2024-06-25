@@ -166,6 +166,21 @@ The SequilderBuilder component has the following props:
     }
 ```
 
+- nodeContentMap **(New)**
+
+```
+    {
+      nodeId: "content",
+      ...
+    }
+```
+
+- nodeEndIcon **(New)**
+
+```
+    "URL" || () => <Icon/>
+```
+
 - branchesStepRestriction
 
 ```
