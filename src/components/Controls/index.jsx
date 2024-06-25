@@ -252,7 +252,6 @@ const Controls = ({
         <button
           onClick={() => setShowMoreButtons(false)}
           style={{ marginBottom: "10px" }}
-          disabled={nodes.length === 0}
           className="actionButtonSecondary"
         >
           Cancel
