@@ -22,9 +22,11 @@ const SequenceBuilder = ({
   conditionsMap = {},
   nodeContentMap = {},
   uniqueStepTypes = [],
+  disableAllActions = false,
   branchesStepRestriction = {},
   allowedConditionalBranches = 1,
   conditionalBranchAllowedSteps = {},
+  branchStepSelectionDropdownText = {},
   subNodeContent = () => <>Sub-Node content</>,
   onNodeDoubleClick = () => console.log("Node double clicked"),
   leftBranchSubNodeContent = () => <>Left branch sub-node content</>,
@@ -414,7 +416,7 @@ const SequenceBuilder = ({
     let newNodeX1 = selectedNode.x - 400;
     let newNodeY1 = selectedNode.y + 270;
 
-    let newNodeX2 = newNodeX1 + 950;
+    let newNodeX2 = newNodeX1 + 1040;
     let newNodeY2 = newNodeY1;
     const stepNumber = selectedNode.stepNumber + 1;
 
@@ -531,12 +533,14 @@ const SequenceBuilder = ({
         conditionsMap={conditionsMap}
         showMoreButtons={showMoreButtons}
         uniqueStepTypes={uniqueStepTypes}
+        disableAllActions={disableAllActions}
         setShowMoreButtons={setShowMoreButtons}
         scrollBackToContent={scrollBackToContent}
         addConditionalBranches={addConditionalBranches}
         branchesStepRestriction={branchesStepRestriction}
         allowedConditionalBranches={allowedConditionalBranches}
         conditionalBranchAllowedSteps={conditionalBranchAllowedSteps}
+        branchStepSelectionDropdownText={branchStepSelectionDropdownText}
       />
     </div>
   );

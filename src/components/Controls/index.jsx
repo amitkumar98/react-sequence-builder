@@ -18,12 +18,14 @@ const Controls = ({
   conditionsMap,
   showMoreButtons,
   uniqueStepTypes,
+  disableAllActions,
   setShowMoreButtons,
   scrollBackToContent,
   addConditionalBranches,
   branchesStepRestriction,
   allowedConditionalBranches,
   conditionalBranchAllowedSteps,
+  branchStepSelectionDropdownText,
 }) => {
   const { nodes, selectedNodeId } = useSequenceBuilder();
 
@@ -135,12 +137,23 @@ const Controls = ({
     );
   }
 
+  const leftBranchStepSelectionDropdownText = branchStepSelectionDropdownText[
+    selectedCondition
+  ]
+    ? branchStepSelectionDropdownText[selectedCondition][0]
+    : "Choose left branch step type:";
+  const rightBranchStepSelectionDropdownText = branchStepSelectionDropdownText[
+    selectedCondition
+  ]
+    ? branchStepSelectionDropdownText[selectedCondition][1]
+    : "Choose right branch step type:";
+
   return (
     <div style={{ display: "flex", flexDirection: "column", rowGap: "10px" }}>
       <div>
         <label htmlFor="step_type">Step type:</label>
         <br />
-        <select name="step_type" id="step_type">
+        <select name="step_type" id="step_type" disabled={disableAllActions}>
           {Object.keys(filteredStepTypeMap).map((option) => (
             <option value={option} key={crypto.randomUUID()}>
               {filteredStepTypeMap[option]}
@@ -157,6 +170,7 @@ const Controls = ({
         onClick={addNode}
         style={{ marginBottom: "10px" }}
         className="actionButtonPrimary"
+        disabled={disableAllActions}
         // ToDo: add disabled prop based on multiple conditions
       >
         Add step
@@ -165,6 +179,7 @@ const Controls = ({
         onClick={removeNode}
         style={{ marginBottom: "10px" }}
         disabled={
+          disableAllActions ||
           !selectedNodeId ||
           (selectedNode &&
             !selectedNode.isConditional &&
@@ -184,6 +199,7 @@ const Controls = ({
               name="condition"
               id="condition"
               value={selectedCondition}
+              disabled={disableAllActions}
               onChange={(e) => setSelectedCondition(e.target.value)}
             >
               {Object.keys(conditionsMap).map((option) => (
@@ -200,10 +216,14 @@ const Controls = ({
           </div>
           <div>
             <label htmlFor="left_step_type">
-              Choose left branch step type:
+              {leftBranchStepSelectionDropdownText}
             </label>
             <br />
-            <select name="left_step_type" id="left_step_type">
+            <select
+              name="left_step_type"
+              id="left_step_type"
+              disabled={disableAllActions}
+            >
               {Object.keys(filteredLeftBranchStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
                   {filteredLeftBranchStepTypeMap[option]}
@@ -218,10 +238,14 @@ const Controls = ({
           </div>
           <div>
             <label htmlFor="right_step_type">
-              Choose right branch step type:
+              {rightBranchStepSelectionDropdownText}
             </label>
             <br />
-            <select name="right_step_type" id="right_step_type">
+            <select
+              name="right_step_type"
+              id="right_step_type"
+              disabled={disableAllActions}
+            >
               {Object.keys(filteredRightBranchStepTypeMap).map((option) => (
                 <option value={option} key={crypto.randomUUID()}>
                   {filteredRightBranchStepTypeMap[option]}
@@ -243,7 +267,7 @@ const Controls = ({
             : () => setShowMoreButtons(true)
         }
         style={{ marginBottom: "10px" }}
-        disabled={addConditionalBranchButtonDisabled}
+        disabled={disableAllActions || addConditionalBranchButtonDisabled}
         className="actionButtonPrimary"
       >
         Add conditional branch
