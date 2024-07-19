@@ -181,6 +181,23 @@ The SequilderBuilder component has the following props:
     "URL" || () => <Icon/>
 ```
 
+- disableAllActions **(New)**
+
+```
+    accepts boolean, default - false
+```
+
+- branchStepSelectionDropdownText **(New)**
+
+```
+    {
+      "conditionKey": [
+        "Label for left branch dropdown",
+        "Label for right branch dropdown",
+      ],
+    }
+```
+
 - branchesStepRestriction
 
 ```
