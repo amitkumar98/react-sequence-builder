@@ -204,7 +204,7 @@ const SequenceBuilder = ({
       const centerX = centerRef.current.offsetLeft;
       const centerY = centerRef.current.offsetTop;
 
-      newNodeX = centerX - 150;
+      newNodeX = centerX - 105;
       newNodeY = centerY - 300;
     }
 
