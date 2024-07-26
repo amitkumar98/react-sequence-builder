@@ -127,14 +127,16 @@ const Controls = ({
     }
   }
 
-  const node = nodes.find(
+  const uniqueStepNodes = nodes.filter(
     (node) => uniqueStepTypes.indexOf(node.stepType) > -1
   );
-  if (node) {
-    filteredStepTypeMap = filterFromObject(
-      filteredStepTypeMap,
-      (key) => node.stepType !== key
-    );
+  if (uniqueStepNodes && uniqueStepNodes.length > 0) {
+    uniqueStepNodes.forEach((node) => {
+      filteredStepTypeMap = filterFromObject(
+        filteredStepTypeMap,
+        (key) => node.stepType !== key
+      );
+    });
   }
 
   const leftBranchStepSelectionDropdownText = branchStepSelectionDropdownText[
