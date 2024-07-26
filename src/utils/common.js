@@ -61,6 +61,8 @@ export const getEdgesFromNodes = (nodes) => {
       }
     );
 
+    edgeNumber += 3;
+
     for (let i = 0; i < leftBranchNodes.length - 1; i++) {
       if (i === 0) {
         newEdges.push({
