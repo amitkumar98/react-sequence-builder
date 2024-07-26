@@ -6,7 +6,8 @@ const nodeContainerStyles = (
   nodeBackgroundColor
 ) => {
   return {
-    width: nodeStyles?.width ? nodeStyles.width : "480px",
+    minWidth: nodeStyles?.minWidth ? nodeStyles.minWidth : "520px",
+    width: nodeStyles?.width && nodeStyles.width,
     height: nodeStyles?.height ? nodeStyles.height : "140px",
     display: nodeStyles?.display ? nodeStyles.display : "flex",
     justifyContent: nodeStyles?.justifyContent
