@@ -91,12 +91,15 @@ const Node = ({
         <div style={nodeContentStyles}>
           <div style={nodeTitleRowStyles(!!iconElement || !!nodeEndIcon)}>
             {renderStartIcon()}
-            <span>{stepTypeMap[node.stepType]}</span>
+            <div style={{ textAlign: "center" }}>
+              <span>{stepTypeMap[node.stepType]}</span>
+              <br />
+              {!!nodeContent && (
+                <span style={nodeSubTitleRowStyles}>{nodeContent}</span>
+              )}
+            </div>
             {renderEndIcon()}
           </div>
-          {!!nodeContent && (
-            <span style={nodeSubTitleRowStyles}>{nodeContent}</span>
-          )}
         </div>
       ) : (
         !!node.nodeText && node.nodeText
