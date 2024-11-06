@@ -1,6 +1,6 @@
 {
   "name": "react-sequence-builder",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "license": "MIT",
   "type": "module",
   "main": "dist/sequence-builder.umd.js",
