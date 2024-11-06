@@ -68,8 +68,8 @@ const Board = ({
       <span
         style={{
           position: "absolute",
-          top: "160px",
-          right: "620px",
+          top: "20%",
+          right: "24%",
           display: "flex",
           flexDirection: "column",
           rowGap: "2px",
@@ -84,7 +84,7 @@ const Board = ({
         <button
           onClick={() => handleZoom(null, false, true)}
           style={zoomButtonsStyle}
-          disabled={zoom === 0.6}
+          disabled={zoom === 0.3}
         >
           -
         </button>

@@ -71,13 +71,13 @@ const SequenceBuilder = ({
   const handleWheel = useCallback(
     (e, a, b) => {
       if (a) {
-        setZoom((prevZoom) => prevZoom + 0.5);
+        setZoom((prevZoom) => prevZoom + 0.4);
         wait(1).then(() => {
           scrollBackToContent();
         });
         return;
       } else if (b) {
-        setZoom((prevZoom) => Math.max(prevZoom - 0.5, 0.6));
+        setZoom((prevZoom) => Math.max(prevZoom - 0.4, 0.3));
         wait(1).then(() => {
           scrollBackToContent();
         });
