@@ -247,4 +247,12 @@ The SequilderBuilder component has the following props:
 () => <>Right branch sub-node content</>
 ```
 
+- zoomButtonsStyle
+
+```
+  {
+    ...zoomButtonsStyle
+  }
+```
+
 #### All style related props given in above snippets are applied by default.
