@@ -13,9 +13,12 @@ const Board = ({
   dragOffsetBoard,
   handleZoom,
   zoomButtonsStyle,
+  boardWidth,
 }) => {
   return (
-    <>
+    <div
+      style={{ display: "flex", justifyContent: "center", width: boardWidth }}
+    >
       <div
         ref={containerRef}
         style={{
@@ -65,31 +68,33 @@ const Board = ({
           {children}
         </div>
       </div>
-      <span
-        style={{
-          position: "absolute",
-          top: "20%",
-          right: "24%",
-          display: "flex",
-          flexDirection: "column",
-          rowGap: "2px",
-        }}
-      >
-        <button
-          onClick={() => handleZoom(null, true, false)}
-          style={zoomButtonsStyle}
+      <div style={{ position: "relative" }}>
+        <span
+          style={{
+            position: "absolute",
+            top: "20%",
+            right: "30%",
+            display: "flex",
+            flexDirection: "column",
+            rowGap: "2px",
+          }}
         >
-          +
-        </button>
-        <button
-          onClick={() => handleZoom(null, false, true)}
-          style={zoomButtonsStyle}
-          disabled={zoom === 0.3}
-        >
-          -
-        </button>
-      </span>
-    </>
+          <button
+            onClick={() => handleZoom(null, true, false)}
+            style={zoomButtonsStyle}
+          >
+            +
+          </button>
+          <button
+            onClick={() => handleZoom(null, false, true)}
+            style={zoomButtonsStyle}
+            disabled={zoom === 0.3}
+          >
+            -
+          </button>
+        </span>
+      </div>
+    </div>
   );
 };
 

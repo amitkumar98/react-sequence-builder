@@ -9,6 +9,7 @@ import { useSequenceBuilder, useSequenceBuilderInternal } from "../../hooks";
 
 const SequenceBuilder = ({
   edgeStroke,
+  boardWidth,
   nodeEndIcon,
   iconsMap = {},
   iconStyles = {},
@@ -511,6 +512,7 @@ const SequenceBuilder = ({
       <Board
         zoom={zoom}
         contentRef={contentRef}
+        boardWidth={boardWidth}
         boardStyles={boardStyles}
         containerRef={containerRef}
         draggingNode={draggingNode}
