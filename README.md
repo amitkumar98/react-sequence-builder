@@ -255,4 +255,10 @@ The SequilderBuilder component has the following props:
   }
 ```
 
+- boardWidth
+
+```
+  value in px, %, rem etc
+```
+
 #### All style related props given in above snippets are applied by default.
