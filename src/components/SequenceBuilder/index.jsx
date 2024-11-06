@@ -22,6 +22,7 @@ const SequenceBuilder = ({
   conditionsMap = {},
   nodeContentMap = {},
   uniqueStepTypes = [],
+  zoomButtonsStyle = {},
   disableAllActions = false,
   branchesStepRestriction = {},
   allowedConditionalBranches = 1,
@@ -68,7 +69,20 @@ const SequenceBuilder = ({
   }, [nodes.length]);
 
   const handleWheel = useCallback(
-    (e) => {
+    (e, a, b) => {
+      if (a) {
+        setZoom((prevZoom) => prevZoom + 0.5);
+        wait(1).then(() => {
+          scrollBackToContent();
+        });
+        return;
+      } else if (b) {
+        setZoom((prevZoom) => Math.max(prevZoom - 0.5, 0.6));
+        wait(1).then(() => {
+          scrollBackToContent();
+        });
+        return;
+      }
       e.preventDefault();
       const zoomChange = e.deltaY * -0.005;
       setZoom((prevZoom) =>
@@ -505,6 +519,8 @@ const SequenceBuilder = ({
         isDraggingBoard={isDraggingBoard}
         handleMouseDown={handleMouseDown}
         handleMouseMove={handleMouseMove}
+        handleZoom={handleWheel}
+        zoomButtonsStyle={zoomButtonsStyle}
       >
         {nodes.length === 0 && <div ref={centerRef}>.</div>}
         <Edges edges={edges} nodes={nodes} stroke={edgeStroke} />

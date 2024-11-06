@@ -1,6 +1,6 @@
 export function wait(seconds) {
   return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 500);
+    setTimeout(resolve, seconds * 200);
   });
 }
 
